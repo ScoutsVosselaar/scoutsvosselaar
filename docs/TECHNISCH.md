@@ -1,13 +1,14 @@
 # Technische documentatie
 
-Voor wie de site technisch beheert. Voor de leiding is er `docs/HANDLEIDING.md`.
+Voor wie de site technisch beheert. Voor de leiding is er `docs/HANDLEIDING.md`, voor accounts en eigenaars `docs/OVERDRACHT.md`.
 
 ## Overzicht
 
 - **Site:** Astro (statische output), inhoud in `src/content/`, schema's in `src/content.config.ts`.
 - **CMS:** Sveltia CMS, bereikbaar op `/admin/`. De configuratie staat in `src/cms/config.ts`.
-- **Hosting:** GitHub Pages, gebouwd door GitHub Actions bij elke commit op `main`.
-- **Login CMS:** GitHub OAuth via de `sveltia-cms-auth` Worker op Cloudflare (nog op te zetten, zie de verhuischecklist).
+- **Repo:** `ScoutsVosselaar/scoutsvosselaar` op GitHub.
+- **Hosting:** GitHub Pages, gebouwd door GitHub Actions bij elke commit op `main`. Nu op `https://scoutsvosselaar.github.io/scoutsvosselaar/`, later op `https://scoutsvosselaar.be/`.
+- **Login CMS:** GitHub OAuth via de `sveltia-cms-auth` Worker op Cloudflare (nog op te zetten, zie de verhuischecklist, stap 5 en 6).
 
 ## Alles wat van de eigenaar afhangt
 
@@ -26,6 +27,8 @@ Zolang `siteUrl` niet het eigen domein is, krijgt elke pagina `noindex` en verbi
 Zolang `CMS_AUTH_URL` leeg is, toont de CMS enkel "Inloggen met een toegangstoken" (en op localhost "Werken met een lokale repository").
 
 ## Lokaal ontwikkelen
+
+Nodig: Node 22 (zie `.nvmrc`) en pnpm. pnpm krijg je met `corepack enable`; de versie staat in `package.json` (`packageManager`).
 
 ```sh
 pnpm install
@@ -122,7 +125,7 @@ Pas na een volledige test op `github.io`.
 ### 8. Afronden
 
 - [ ] Leiding met redactietoegang uitnodigen in team "Redactie".
-- [ ] `docs/OVERDRACHT.md` invullen: accounts, eigenaars, waar de credentials staan.
+- [ ] De open velden (`____`) in `docs/OVERDRACHT.md` invullen: accounts, eigenaars, waar de credentials staan.
 - [ ] Bent blijft mede-eigenaar, nooit enige eigenaar.
 
 ## Sveltia CMS updaten
@@ -142,6 +145,14 @@ Dependabot slaat `@sveltia/cms` bewust over (`.github/dependabot.yml`). Update S
 - **CI** (`.github/workflows/ci.yml`): bij elke pull request. Installeren, `astro check`, unit tests en build. Ze publiceert niets.
 - **Dependabot** (`.github/dependabot.yml`): elke maandag voorstellen voor npm-pakketten en GitHub Actions, gegroepeerd: kleine npm-updates (minor en patch) samen, grote (major) samen, en alle actions samen. Merge een voorstel pas als CI groen is. Bij een grote update: lees de release notes en test lokaal met `pnpm dev`.
 - Gebruik in alle workflows dezelfde versies van de actions. Dependabot werkt ze samen bij.
+- De Playwright-tests (`pnpm test:e2e`) draaien niet in CI. Draai ze lokaal bij wijzigingen aan de CMS en bij elke Sveltia-update.
+
+### Als publiceren mislukt
+
+1. Open het issue "Publiceren van de site is mislukt" of Actions → Deploy en bekijk de rode stap.
+2. Een fout in de inhoud breekt de build niet; zoek dus eerst in code, configuratie of afhankelijkheden. Een recente Dependabot-merge is een goede verdachte.
+3. Herstel op `main` en push. De volgende geslaagde run zet de site weer goed. Sluit daarna het issue.
+4. Stond Pages uit of is de omgeving `github-pages` verdwenen: Settings → Pages → Source op **GitHub Actions** zetten.
 
 ### Branch protection
 
