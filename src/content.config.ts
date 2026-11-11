@@ -168,27 +168,17 @@ const albums = defineCollection({
   },
 });
 
-const blockTitle = (type: string) => soft(`blocks.${type}.title`, z.string().trim(), '');
-
-/** Blocks of a page. Each `type` matches a block type in src/cms/config.ts. */
-const pageBlock = z.discriminatedUnion('type', [
-  z.object({
-    type: z.literal('text'),
-    title: blockTitle('text'),
-    body: text('blocks.text.body'),
-    buttonLabel: optionalText('blocks.text.buttonLabel'),
-    buttonUrl: optionalText('blocks.text.buttonUrl'),
-    buttonFile: optionalText('blocks.text.buttonFile'),
-    bodyAfter: text('blocks.text.bodyAfter'),
-  }),
-  z.object({
-    type: z.literal('emails'),
-    title: blockTitle('emails'),
-    extra: list('blocks.emails.extra', z.object({ label: text('blocks.emails.extra.label'), email: text('blocks.emails.extra.email') })),
-  }),
-  z.object({ type: z.literal('meetings'), title: blockTitle('meetings') }),
-  z.object({ type: z.literal('groupLeaders'), title: blockTitle('groupLeaders') }),
-]);
+/** A block of a page. `type` decides what the block shows besides its text (see src/cms/config.ts). */
+const pageBlock = z.object({
+  type: soft('blocks.type', z.enum(['text', 'emails', 'meetings', 'groupLeaders']), 'text'),
+  title: text('blocks.title'),
+  body: text('blocks.body'),
+  buttonLabel: optionalText('blocks.buttonLabel'),
+  buttonUrl: optionalText('blocks.buttonUrl'),
+  buttonFile: optionalText('blocks.buttonFile'),
+  bodyAfter: text('blocks.bodyAfter'),
+  extra: list('blocks.extra', z.object({ label: text('blocks.extra.label'), email: text('blocks.extra.email') })),
+});
 
 /** Fixed pages (Inschrijven, Praktisch, ...): their text and blocks. Created in code only. */
 const pages = defineCollection({

@@ -355,9 +355,6 @@ const blockText = (name: string, label: string, hint?: string): Field => ({
   hint,
 });
 
-const blockTitle = (fallback: string): Field =>
-  string('title', 'Titel', { default: fallback, hint: 'Staat links naast het blok.' });
-
 const pages: EntryCollection = {
   name: 'pages',
   label: "Pagina's",
@@ -392,63 +389,49 @@ const pages: EntryCollection = {
       label_singular: 'blok',
       widget: 'list',
       required: false,
-      hint: 'Kies bij "Toevoegen" een tekstblok of een blok dat zichzelf vult.',
-      types: [
+      summary: '{{fields.title}}',
+      hint: 'Elk blok heeft links een titel en rechts tekst. Kies bij Soort of het blok ook vanzelf iets toont.',
+      // One block shape with a "Soort" select instead of `types`: Sveltia's
+      // add menu for typed lists breaks on phones (effect_update_depth_exceeded).
+      fields: [
         {
-          name: 'text',
-          label: 'Tekstblok',
-          description: 'Een titel en tekst, eventueel met een knop.',
-          summary: '{{fields.title}}',
-          fields: [
-            blockTitle(''),
-            blockText('body', 'Tekst'),
-            optionalString('buttonLabel', 'Tekst op de knop', { hint: 'Optioneel. Bv. "Naar het inschrijfformulier".' }),
-            optionalString('buttonUrl', 'Link van de knop', {
-              hint: 'Een webadres (https://...) of een pad op de site (bv. /kalender/).',
-              pattern: ['^(https?://|mailto:|tel:|/)', 'Begin met https://, mailto:, tel: of /'],
-            }),
-            {
-              name: 'buttonFile',
-              label: 'Of een bestand voor de knop',
-              widget: 'file',
-              required: false,
-              choose_url: false,
-              hint: 'Bv. een PDF om te downloaden. Gaat voor op de link.',
-            },
-            blockText('bodyAfter', 'Tekst onder de knop', 'Optioneel.'),
+          name: 'type',
+          label: 'Soort',
+          widget: 'select',
+          default: 'text',
+          options: [
+            { label: 'Tekstblok', value: 'text' },
+            { label: 'Mailadressen (algemeen adres en takmails vanzelf, plus extra adressen)', value: 'emails' },
+            { label: 'Vergadermomenten (vanzelf, uit Takken)', value: 'meetings' },
+            { label: 'Groepsleiding (vanzelf, uit het actieve werkjaar)', value: 'groupLeaders' },
           ],
+          hint: 'Bij de andere soorten komt de tekst hieronder boven wat vanzelf getoond wordt.',
         },
+        string('title', 'Titel', { hint: 'Staat links naast het blok.' }),
+        blockText('body', 'Tekst'),
+        optionalString('buttonLabel', 'Tekst op de knop', { hint: 'Optioneel. Bv. "Naar het inschrijfformulier".' }),
+        optionalString('buttonUrl', 'Link van de knop', {
+          hint: 'Een webadres (https://...) of een pad op de site (bv. /kalender/).',
+          pattern: ['^(https?://|mailto:|tel:|/)', 'Begin met https://, mailto:, tel: of /'],
+        }),
         {
-          name: 'emails',
-          label: 'Mailadressen',
-          description: 'Het algemene adres en de takmails (uit Takken), plus extra adressen.',
-          summary: '{{fields.title}}',
-          fields: [
-            blockTitle('Mailadressen'),
-            {
-              name: 'extra',
-              label: 'Extra adressen',
-              label_singular: 'adres',
-              widget: 'list',
-              required: false,
-              summary: '{{fields.label}}: {{fields.email}}',
-              fields: [string('label', 'Waarvoor'), string('email', 'E-mail', { type: 'email' })],
-            },
-          ],
+          name: 'buttonFile',
+          label: 'Of een bestand voor de knop',
+          widget: 'file',
+          required: false,
+          choose_url: false,
+          hint: 'Bv. een PDF om te downloaden. Gaat voor op de link.',
         },
+        blockText('bodyAfter', 'Tekst onder de knop', 'Optioneel.'),
         {
-          name: 'meetings',
-          label: 'Vergadermomenten',
-          description: 'Het vergadermoment van elke tak (uit Takken).',
-          summary: '{{fields.title}}',
-          fields: [blockTitle('Vergadermomenten')],
-        },
-        {
-          name: 'groupLeaders',
-          label: 'Groepsleiding',
-          description: 'De groepsleiding van het actieve werkjaar (uit Werkjaren).',
-          summary: '{{fields.title}}',
-          fields: [blockTitle('Groepsleiding')],
+          name: 'extra',
+          label: 'Extra mailadressen',
+          label_singular: 'adres',
+          widget: 'list',
+          required: false,
+          summary: '{{fields.label}}: {{fields.email}}',
+          hint: 'Enkel bij de soort Mailadressen.',
+          fields: [string('label', 'Waarvoor'), string('email', 'E-mail', { type: 'email' })],
         },
       ],
     },

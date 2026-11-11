@@ -144,12 +144,14 @@ De tekst van de vaste pagina's (Inschrijven, Praktisch, Verhuur, Onze groep en P
    - Wil je een opvallende knop, vul dan **Tekst op de knop** in en ofwel een **Link van de knop**, ofwel een **bestand** (bv. een PDF). Tekst die onder de knop moet komen, zet je bij **Tekst onder de knop**.
 4. Klik op **Opslaan**.
 
-Een blok toevoegen: klik onderaan op **blok toevoegen** en kies:
+Een blok toevoegen: klik onderaan op **blok toevoegen**. Kies bij **Soort**:
 
 - **Tekstblok**: een titel en tekst, eventueel met een knop.
-- **Mailadressen**: het algemene adres en de takmails vullen zichzelf in vanuit **Takken**. Extra adressen (bv. de verhuur) voeg je toe in het blok.
+- **Mailadressen**: het algemene adres en de takmails vullen zichzelf in vanuit **Takken**. Extra adressen (bv. de verhuur) voeg je toe bij **Extra mailadressen**.
 - **Vergadermomenten**: vult zichzelf in vanuit **Takken**.
 - **Groepsleiding**: vult zichzelf in vanuit het actieve werkjaar.
+
+Bij de laatste drie mag je ook tekst en een knop invullen: die komen boven wat vanzelf getoond wordt.
 
 Een blok verplaatsen of verwijderen: gebruik de pijltjes en het menu rechts bovenaan het blok.
 

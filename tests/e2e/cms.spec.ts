@@ -160,12 +160,11 @@ test('pagina: tekst aanpassen en een blok toevoegen', async ({ page }) => {
 
   // A new text block with bold text, at the end.
   await page.getByRole('button', { name: /blok\W* toevoegen/ }).click();
-  await page.getByRole('menuitem').filter({ hasText: 'Tekstblok' }).click();
   const block = page.getByRole('group', { name: /^Item 5 of 5/ });
   await block.getByRole('textbox', { name: 'Titel' }).fill('Fietsen');
   await block.getByRole('textbox', { name: 'Tekst', exact: true }).click();
   await page.keyboard.type('Kom met de ');
-  await block.getByRole('button', { name: 'Vet' }).click();
+  await block.getByRole('button', { name: 'Vet' }).first().click();
   await page.keyboard.type('fiets');
   await save(page);
 

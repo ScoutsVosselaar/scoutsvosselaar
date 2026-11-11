@@ -55,14 +55,16 @@ De admin is bewust een statisch bestand (`public/admin/index.html`) en geen Astr
 
 ### Vaste pagina's
 
-De tekst van Inschrijven, Praktisch, Verhuur, Onze groep en Privacy staat in `src/content/pages/<id>.json` en is in de CMS te wijzigen onder "Pagina's". Elke pagina heeft `title`, `intro`, `description` en een lijst `blocks`. De bloktypes:
+De tekst van Inschrijven, Praktisch, Verhuur, Onze groep en Privacy staat in `src/content/pages/<id>.json` en is in de CMS te wijzigen onder "Pagina's". Elke pagina heeft `title`, `intro`, `description` en een lijst `blocks`. Elk blok heeft dezelfde velden: `title`, `body` (Markdown), een optionele knop (`buttonLabel` met `buttonUrl` of `buttonFile` uit `public/docs/`), `bodyAfter` en `extra`. Het veld `type` bepaalt wat het blok daarnaast vanzelf toont:
 
-- `text`: titel, Markdown-tekst, een optionele knop (`buttonUrl` of `buttonFile` uit `public/docs/`) en tekst onder de knop.
-- `emails`: het algemene adres uit `src/site.config.ts`, de takmails uit de takken en extra adressen.
+- `text`: niets extra.
+- `emails`: het algemene adres uit `src/site.config.ts`, de takmails uit de takken en de adressen uit `extra`.
 - `meetings`: de vergadermomenten van de takken.
 - `groupLeaders`: de groepsleiding van het actieve werkjaar.
 
-Het `.astro`-bestand van zo'n pagina is enkel `<CmsPage id="..." />` (`src/components/CmsPage.astro` en `PageBlocks.astro`). Een nieuw bloktype vraagt drie aanpassingen: het schema in `src/content.config.ts`, de weergave in `PageBlocks.astro` en het type in `src/cms/config.ts`. De leiding kan geen pagina's toevoegen of verwijderen (`create: false`). Een nieuwe pagina: JSON-bestand, `.astro`-bestand en een item in `navigation` in `src/site.config.ts`.
+Bewust geen `types` (een lijst met verschillende soorten items) in de CMS: in Sveltia 0.248 loopt die op een gsm vast (`effect_update_depth_exceeded`) bij het toevoegen van een blok. Probeer dat opnieuw bij een Sveltia-update.
+
+Het `.astro`-bestand van zo'n pagina is enkel `<CmsPage id="..." />` (`src/components/CmsPage.astro` en `PageBlocks.astro`). Een nieuwe soort blok vraagt drie aanpassingen: de waarde in het schema in `src/content.config.ts`, de weergave in `PageBlocks.astro` en de optie bij Soort in `src/cms/config.ts`. De leiding kan geen pagina's toevoegen of verwijderen (`create: false`). Een nieuwe pagina: JSON-bestand, `.astro`-bestand en een item in `navigation` in `src/site.config.ts`.
 
 In Markdown-tekst krijgen paden op de site (bv. `/docs/plan.pdf`) vanzelf het base path ervoor (`src/lib/site-links.ts`).
 

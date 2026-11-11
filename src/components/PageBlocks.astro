@@ -1,8 +1,8 @@
 ---
 /**
- * The blocks of a fixed page from the CMS (collection `pages`). Text blocks
- * hold Markdown; the other block types fill themselves from the takken and
- * the active werkjaar.
+ * The blocks of a fixed page from the CMS (collection `pages`). Every block
+ * has a title, Markdown text and an optional button; its `type` adds content
+ * that fills itself from the takken or the active werkjaar.
  */
 import InfoBlock from './InfoBlock.astro';
 import LeaderCard from './LeaderCard.astro';
@@ -20,7 +20,7 @@ const [sections, year] = await Promise.all([getSections(), getCurrentYear()]);
 const overview = year && blocks.some((b) => b.type === 'groupLeaders') ? await getYearOverview(year) : undefined;
 
 // Unique ids for the headings, also when two blocks have the same title.
-const used = new Set<string>(['groepsleiding']);
+const used = new Set<string>();
 const idFor = (title: string) => {
   const slug = title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'blok';
   let id = slug;
@@ -31,11 +31,10 @@ const idFor = (title: string) => {
 
 const rendered = await Promise.all(
   blocks.map(async (block) => {
-    if (block.type !== 'text') return { block, id: idFor(block.title) };
     const href = block.buttonFile ?? block.buttonUrl;
     return {
       block,
-      id: idFor(block.title),
+      id: idFor(block.type === 'groupLeaders' ? 'groepsleiding' : block.title),
       body: block.body ? await renderMarkdown(block.body) : '',
       bodyAfter: block.bodyAfter ? await renderMarkdown(block.bodyAfter) : '',
       button: href && block.buttonLabel ? { href: url(href), label: block.buttonLabel, download: Boolean(block.buttonFile) } : undefined,
@@ -46,24 +45,41 @@ const rendered = await Promise.all(
 
 {
   rendered.map(({ block, id, body, bodyAfter, button }) => {
-    if (block.type === 'text') {
+    const extras = (
+      <>
+        {button && (
+          <p>
+            <a class="btn" href={button.href} download={button.download || undefined}>
+              {button.label}
+            </a>
+          </p>
+        )}
+        <Fragment set:html={bodyAfter} />
+      </>
+    );
+
+    if (block.type === 'groupLeaders') {
+      if (!overview || overview.groupLeaders.length === 0) return null;
       return (
-        <InfoBlock title={block.title} id={id}>
-          <Fragment set:html={body} />
-          {button && (
-            <p>
-              <a class="btn" href={button.href} download={button.download || undefined}>
-                {button.label}
-              </a>
-            </p>
-          )}
-          <Fragment set:html={bodyAfter} />
-        </InfoBlock>
+        <section aria-labelledby={id} class="border-t-2 border-ink pt-5">
+          <h2 id={id} class="text-2xl font-bold sm:text-3xl">
+            {block.title || 'Groepsleiding'} {overview.year.data.label}
+          </h2>
+          {body && <div class="prose mt-3" set:html={body} />}
+          <ul class="mt-6 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-4">
+            {overview.groupLeaders.map((leader) => (
+              <LeaderCard leader={leader} showContact />
+            ))}
+          </ul>
+          {(button || bodyAfter) && <div class="prose mt-6">{extras}</div>}
+        </section>
       );
     }
-    if (block.type === 'emails') {
-      return (
-        <InfoBlock title={block.title} id={id}>
+
+    return (
+      <InfoBlock title={block.title} id={id}>
+        <Fragment set:html={body} />
+        {block.type === 'emails' && (
           <ul>
             <li>
               Algemene vragen, voor de groepsleiding: <a href={`mailto:${site.email}`}>{site.email}</a>
@@ -83,12 +99,8 @@ const rendered = await Promise.all(
                 </li>
               ))}
           </ul>
-        </InfoBlock>
-      );
-    }
-    if (block.type === 'meetings') {
-      return (
-        <InfoBlock title={block.title} id={id}>
+        )}
+        {block.type === 'meetings' && (
           <ul>
             {sections.map((s) => (
               <li>
@@ -96,23 +108,9 @@ const rendered = await Promise.all(
               </li>
             ))}
           </ul>
-        </InfoBlock>
-      );
-    }
-    return (
-      overview &&
-      overview.groupLeaders.length > 0 && (
-        <section aria-labelledby="groepsleiding" class="border-t-2 border-ink pt-5">
-          <h2 id="groepsleiding" class="text-2xl font-bold sm:text-3xl">
-            {block.title || 'Groepsleiding'} {overview.year.data.label}
-          </h2>
-          <ul class="mt-6 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-4">
-            {overview.groupLeaders.map((leader) => (
-              <LeaderCard leader={leader} showContact />
-            ))}
-          </ul>
-        </section>
-      )
+        )}
+        {extras}
+      </InfoBlock>
     );
   })
 }
