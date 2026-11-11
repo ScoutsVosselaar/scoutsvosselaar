@@ -1,0 +1,39 @@
+name: CMS-tests
+
+# Playwright tests of the CMS flows, on desktop and phone. Start by hand
+# (Actions > CMS-tests > Run workflow), e.g. before merging a Sveltia update.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Afhankelijkheden installeren
+        run: pnpm install --frozen-lockfile
+
+      - name: Browser installeren
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: CMS-tests
+        run: pnpm test:e2e
+
+      - name: Rapport bewaren
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-rapport
+          path: test-results/
+          retention-days: 7

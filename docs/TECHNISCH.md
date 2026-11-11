@@ -149,7 +149,7 @@ Dependabot slaat `@sveltia/cms` bewust over (`.github/dependabot.yml`). Update S
 - **CI** (`.github/workflows/ci.yml`): bij elke pull request. Installeren, `astro check`, unit tests en build. Ze publiceert niets.
 - **Dependabot** (`.github/dependabot.yml`): elke maandag voorstellen voor npm-pakketten en GitHub Actions, gegroepeerd: kleine npm-updates (minor en patch) samen, grote (major) samen, en alle actions samen. Merge een voorstel pas als CI groen is. Bij een grote update: lees de release notes en test lokaal met `pnpm dev`.
 - Gebruik in alle workflows dezelfde versies van de actions. Dependabot werkt ze samen bij.
-- De Playwright-tests (`pnpm test:e2e`) draaien niet in CI. Draai ze lokaal bij wijzigingen aan de CMS en bij elke Sveltia-update.
+- **CMS-tests** (`.github/workflows/e2e.yml`): de Playwright-tests (`pnpm test:e2e`) van de CMS, op desktop en gsm. Ze draaien niet vanzelf. Start ze bij wijzigingen aan de CMS en bij elke Sveltia-update: Actions → CMS-tests → Run workflow, en kies de branch. Lokaal kan ook, met Node 22 (Node 24.1 heeft een bug die Playwright breekt).
 
 ### Als publiceren mislukt
 
