@@ -23,7 +23,7 @@ Daarna, telkens:
 
 1. Ga naar `/admin/`.
 2. Klik op **Inloggen met GitHub** en log in met je GitHub-account.
-3. Je ziet links de onderdelen: Berichten, Evenementen, Werkjaren, Leiding, Fotoalbums, 't Voske, Takken en Instellingen.
+3. Je ziet links de onderdelen: Berichten, Evenementen, Werkjaren, Leiding, Fotoalbums, 't Voske, Pagina's, Takken en Instellingen.
 
 Zie je enkel **Inloggen met een toegangstoken**? Dan is de GitHub-login nog niet klaar. Vraag het aan de webmaster.
 
@@ -132,6 +132,28 @@ Een PDF wordt groot door de foto's. Exporteer hem opnieuw met kleinere afbeeldin
 - **Canva:** Delen > Downloaden > PDF Standaard (niet "PDF Afdrukken"), en zet **PDF comprimeren** aan.
 - **Google Docs:** Bestand > Downloaden > PDF-document. Is hij nog te groot, verklein dan eerst de foto's in het document.
 - **Al een PDF?** Een gratis programma zoals PDF24 (pdf24.org, werkt ook zonder upload in de desktopversie) kan hem comprimeren. Kies een middelmatige kwaliteit en kijk na of de foto's nog scherp genoeg zijn.
+
+## Een pagina aanpassen
+
+De tekst van de vaste pagina's (Inschrijven, Praktisch, Verhuur, Onze groep en Privacy) staat bij **Pagina's**. Een pagina bestaat uit **blokken**: elk blok heeft links een titel en rechts de tekst.
+
+1. Kies **Pagina's** en open de pagina.
+2. Bovenaan staan de **Titel**, een korte **Intro** (optioneel) en de **Beschrijving voor zoekmachines**.
+3. Daaronder staan de **Blokken**. Klik op een blok om het open te klappen en pas de tekst aan.
+   - Met de knoppen boven de tekst maak je tekst **vet** of *schuin*, een tussentitel, een lijst, een citaat of een link.
+   - Wil je een opvallende knop, vul dan **Tekst op de knop** in en ofwel een **Link van de knop**, ofwel een **bestand** (bv. een PDF). Tekst die onder de knop moet komen, zet je bij **Tekst onder de knop**.
+4. Klik op **Opslaan**.
+
+Een blok toevoegen: klik onderaan op **blok toevoegen** en kies:
+
+- **Tekstblok**: een titel en tekst, eventueel met een knop.
+- **Mailadressen**: het algemene adres en de takmails vullen zichzelf in vanuit **Takken**. Extra adressen (bv. de verhuur) voeg je toe in het blok.
+- **Vergadermomenten**: vult zichzelf in vanuit **Takken**.
+- **Groepsleiding**: vult zichzelf in vanuit het actieve werkjaar.
+
+Een blok verplaatsen of verwijderen: gebruik de pijltjes en het menu rechts bovenaan het blok.
+
+Nieuwe pagina's of een ander menu maakt de webmaster.
 
 ## De info van een tak aanpassen
 

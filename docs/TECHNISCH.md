@@ -53,6 +53,19 @@ De CMS schrijft dan rechtstreeks in je bestanden, zonder commits. Controleer met
 
 De admin is bewust een statisch bestand (`public/admin/index.html`) en geen Astro-pagina: de devserver herlaadt Astro-pagina's bij elke bestandswijziging, wat opslaan in de lokale modus kan onderbreken. De integratie `src/cms/integration.ts` bundelt `src/cms/admin.ts` met de configuratie naar `public/admin/app/` bij elke start van `pnpm dev` en `pnpm build`. Die map staat in `.gitignore`. Wijzig je `src/cms/config.ts`, herstart dan `pnpm dev`.
 
+### Vaste pagina's
+
+De tekst van Inschrijven, Praktisch, Verhuur, Onze groep en Privacy staat in `src/content/pages/<id>.json` en is in de CMS te wijzigen onder "Pagina's". Elke pagina heeft `title`, `intro`, `description` en een lijst `blocks`. De bloktypes:
+
+- `text`: titel, Markdown-tekst, een optionele knop (`buttonUrl` of `buttonFile` uit `public/docs/`) en tekst onder de knop.
+- `emails`: het algemene adres uit `src/site.config.ts`, de takmails uit de takken en extra adressen.
+- `meetings`: de vergadermomenten van de takken.
+- `groupLeaders`: de groepsleiding van het actieve werkjaar.
+
+Het `.astro`-bestand van zo'n pagina is enkel `<CmsPage id="..." />` (`src/components/CmsPage.astro` en `PageBlocks.astro`). Een nieuw bloktype vraagt drie aanpassingen: het schema in `src/content.config.ts`, de weergave in `PageBlocks.astro` en het type in `src/cms/config.ts`. De leiding kan geen pagina's toevoegen of verwijderen (`create: false`). Een nieuwe pagina: JSON-bestand, `.astro`-bestand en een item in `navigation` in `src/site.config.ts`.
+
+In Markdown-tekst krijgen paden op de site (bv. `/docs/plan.pdf`) vanzelf het base path ervoor (`src/lib/site-links.ts`).
+
 ### Afspraken in de inhoud
 
 - **Afbeeldingen** komen in `src/assets/uploads/<collectie>/`. In de inhoud staat een pad relatief aan het bestand (`../../assets/uploads/posts/foto.webp`), zodat `astro:assets` ze optimaliseert. Bij upload zet de CMS foto's om naar webp, max 2000 px breed, kwaliteit 80. Daarbij verdwijnen EXIF-gegevens, ook GPS (getest in `tests/e2e/cms.spec.ts`).

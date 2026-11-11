@@ -149,24 +149,23 @@ test('bericht, evenement en nieuw werkjaar', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test("pagina: tekst aanpassen en een blok toevoegen", async ({ page }) => {
+test('pagina: tekst aanpassen en een blok toevoegen', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await openLocalRepository(page);
   const admin = page.url().split('#')[0] ?? '';
 
-  await open(page, admin, 'collections/pages/entries/praktisch', 'Titel');
+  await open(page, admin, 'collections/pages/entries/praktisch', 'Intro');
   await page.getByRole('textbox', { name: 'Intro' }).fill('Alles wat je moet weten.');
 
   // A new text block with bold text, at the end.
-  await page.getByRole('button', { name: 'blok toevoegen' }).last().click();
+  await page.getByRole('button', { name: 'blok toevoegen' }).click();
   await page.getByRole('menuitem').filter({ hasText: 'Tekstblok' }).click();
-  const block = page.locator('section[data-key-path="blocks"] [data-key-path$=".title"] input').last();
-  await block.fill('Fietsen');
-  const editor = page.locator('section[data-key-path="blocks"] [contenteditable=true]').last();
-  await editor.click();
+  const block = page.getByRole('group', { name: /^Item 5 of 5/ });
+  await block.getByRole('textbox', { name: 'Titel' }).fill('Fietsen');
+  await block.getByRole('textbox', { name: 'Tekst', exact: true }).click();
   await page.keyboard.type('Kom met de ');
-  await page.keyboard.press('ControlOrMeta+b');
+  await block.getByRole('button', { name: 'Vet' }).click();
   await page.keyboard.type('fiets');
   await save(page);
 
