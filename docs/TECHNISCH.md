@@ -12,7 +12,11 @@ Voor wie de site technisch beheert. Voor de leiding is er `docs/HANDLEIDING.md`,
 
 ## Alles wat van de eigenaar afhangt
 
-Staat op één plek: `deployment.config.ts`. Elke waarde kan ook via een omgevingsvariabele (bv. in de deploy-workflow).
+Staat op één plek: `deployment.config.ts`. Elke waarde kan ook via een omgevingsvariabele.
+
+De Deploy-workflow zet `SITE_URL` en `BASE_PATH` zelf, op basis van de Pages-instellingen (`actions/configure-pages`). Staat er een custom domain in Settings → Pages, dan bouwt de site voor dat domein, anders voor `scoutsvosselaar.github.io/scoutsvosselaar`. De standaardwaarden in `deployment.config.ts` gelden enkel lokaal en in CI.
+
+Links in de inhoud naar `scoutsvosselaar.be` (bv. overgenomen van de oude site) worden bij het bouwen links binnen de site (`src/lib/site-links.ts`). Enkel bestanden onder `/wordpress/` blijven naar de oude server wijzen.
 
 | Waarde | Variabele | Nu | Na het koppelen van het domein |
 |---|---|---|---|
@@ -112,8 +116,8 @@ GitHub stuurt het oude adres door, maar pas toch alles aan.
 Pas na een volledige test op `github.io`.
 
 - [ ] Domein verifiëren: organisatie → Settings → Pages → Add a domain → `scoutsvosselaar.be`. Zet het TXT-record dat GitHub vraagt bij de DNS-beheerder. Dit voorkomt dat iemand anders het domein op GitHub Pages claimt.
-- [ ] In `deployment.config.ts`: `siteUrl` naar `https://scoutsvosselaar.be`, `basePath` naar `/`. Committen en pushen.
-- [ ] Repo → Settings → Pages → Custom domain: `scoutsvosselaar.be`.
+- [ ] In `deployment.config.ts` de standaardwaarden ook aanpassen: `siteUrl` naar `https://scoutsvosselaar.be`, `basePath` naar `/` (voor lokaal en CI; de Deploy-workflow volgt de Pages-instellingen). Committen en pushen.
+- [ ] Repo → Settings → Pages → Custom domain: `scoutsvosselaar.be`. **Pas als de DNS al naar GitHub wijst**: anders stuurt GitHub elke bezoeker van `github.io` door naar de oude site. De volgende Deploy-run bouwt dan vanzelf voor het domein.
 - [ ] Bij de DNS-beheerder **enkel** de webrecords aanpassen:
   - apex `scoutsvosselaar.be`: A-records `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (en eventueel AAAA `2606:50c0:8000::153` tot `2606:50c0:8003::153`)
   - `www`: CNAME naar `scoutsvosselaar.github.io`

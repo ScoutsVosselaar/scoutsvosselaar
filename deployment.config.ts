@@ -18,8 +18,11 @@ export const deployment = {
   repo: env('CMS_REPO') ?? 'ScoutsVosselaar/scoutsvosselaar',
   /** Branch the CMS commits to and the site is built from. */
   branch: env('CMS_BRANCH') ?? 'main',
-  /** Public origin of the site, without trailing slash. */
-  siteUrl: env('SITE_URL') ?? 'https://scoutsvosselaar.github.io',
+  /**
+   * Public origin of the site, without trailing slash. Always https: the Pages
+   * settings report http while "Enforce HTTPS" is off, but Pages serves both.
+   */
+  siteUrl: (env('SITE_URL') ?? 'https://scoutsvosselaar.github.io').replace(/^http:\/\//i, 'https://').replace(/\/+$/, ''),
   /**
    * Path the site lives under. `/scoutsvosselaar` on `<user>.github.io`,
    * `/` once the own domain is connected.
