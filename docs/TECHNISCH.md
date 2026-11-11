@@ -13,13 +13,15 @@ Voor wie de site technisch beheert. Voor de leiding is er `docs/HANDLEIDING.md`.
 
 Staat op één plek: `deployment.config.ts`. Elke waarde kan ook via een omgevingsvariabele (bv. in de deploy-workflow).
 
-| Waarde | Variabele | Nu | Na de verhuis |
+| Waarde | Variabele | Nu | Na het koppelen van het domein |
 |---|---|---|---|
-| Repo voor de CMS | `CMS_REPO` | `BentJ-01/scoutsvosselaar` | `<organisatie>/scoutsvosselaar` |
+| Repo voor de CMS | `CMS_REPO` | `ScoutsVosselaar/scoutsvosselaar` | `ScoutsVosselaar/scoutsvosselaar` |
 | Branch | `CMS_BRANCH` | `main` | `main` |
-| Site-URL | `SITE_URL` | `https://bentj-01.github.io` | `https://scoutsvosselaar.be` |
+| Site-URL | `SITE_URL` | `https://scoutsvosselaar.github.io` | `https://scoutsvosselaar.be` |
 | Base path | `BASE_PATH` | `/scoutsvosselaar` | `/` |
 | Auth-URL | `CMS_AUTH_URL` | leeg | URL van de Worker |
+
+Zolang `siteUrl` niet het eigen domein is, krijgt elke pagina `noindex` en verbiedt `robots.txt` alles. Dat gaat vanzelf uit zodra `siteUrl` op `https://scoutsvosselaar.be` staat.
 
 Zolang `CMS_AUTH_URL` leeg is, toont de CMS enkel "Inloggen met een toegangstoken" (en op localhost "Werken met een lokale repository").
 
@@ -54,33 +56,33 @@ De admin is bewust een statisch bestand (`public/admin/index.html`) en geen Astr
 
 ## Verhuis naar de organisatie
 
-Voer dit uit zodra de GitHub-organisatie en het Cloudflare-account van de scouts bestaan. Gebruik voor alle accounts het gedeelde scoutsadres met tweestapsverificatie, en noteer alles in `docs/OVERDRACHT.md`.
+De organisatie heet `ScoutsVosselaar`, de repo staat op `ScoutsVosselaar/scoutsvosselaar` en de site tijdelijk op `https://scoutsvosselaar.github.io/scoutsvosselaar/`. Gebruik voor alle accounts het gedeelde scoutsadres met tweestapsverificatie, en noteer alles in `docs/OVERDRACHT.md`.
 
 ### 1. GitHub-organisatie klaarzetten
 
-- [ ] Organisatie aanmaken (plan Free). Eigenaars: het gedeelde scoutsaccount en Bent.
+- [x] Organisatie `ScoutsVosselaar` aanmaken (plan Free). Eigenaars: het gedeelde scoutsaccount `ScoutsVosselaarAdmin` en Bent (`BentJ-01`).
 - [ ] Settings → Authentication security: "Require two-factor authentication" aan.
 - [ ] Team "Redactie" aanmaken.
 
 ### 2. Repo overdragen
 
-- [ ] In `BentJ-01/scoutsvosselaar`: Settings → General → Danger Zone → Transfer ownership → naar de organisatie.
-- [ ] Controleer dat de repo publiek is.
+- [x] In `BentJ-01/scoutsvosselaar`: Settings → General → Danger Zone → Transfer ownership → naar `ScoutsVosselaar`.
+- [x] Controleer dat de repo publiek is.
 - [ ] Repo → Settings → Collaborators and teams: team "Redactie" met rol **Write**.
-- [ ] Lokaal: `git remote set-url origin https://github.com/<organisatie>/scoutsvosselaar.git`
+- [x] Lokaal: `git remote set-url origin https://github.com/ScoutsVosselaar/scoutsvosselaar.git` (of opnieuw clonen)
 
 GitHub stuurt het oude adres door, maar pas toch alles aan.
 
 ### 3. Configuratie aanpassen
 
-- [ ] In `deployment.config.ts` de standaardwaarden aanpassen: `repo` naar `<organisatie>/scoutsvosselaar`. Laat `siteUrl` en `basePath` voorlopig staan tot het domein gekoppeld is (stap 7); werk je tussentijds op `<organisatie>.github.io/scoutsvosselaar`, zet `siteUrl` dan op `https://<organisatie>.github.io`.
-- [ ] Commit en push op `main`.
+- [x] In `deployment.config.ts`: `repo` naar `ScoutsVosselaar/scoutsvosselaar`, `siteUrl` naar `https://scoutsvosselaar.github.io`. `basePath` blijft `/scoutsvosselaar` tot het domein gekoppeld is (stap 7).
+- [x] Commit en push op `main`.
 
 ### 4. GitHub Pages aanzetten
 
-- [ ] Repo → Settings → Pages → Source: **GitHub Actions**.
-- [ ] Repo → Actions: workflows toestaan als GitHub dat vraagt.
-- [ ] Workflow "Deploy" handmatig starten (Actions → Deploy → Run workflow) en controleren dat de site op `https://<organisatie>.github.io/scoutsvosselaar/` staat.
+- [x] Repo → Settings → Pages → Source: **GitHub Actions**.
+- [x] Repo → Actions: workflows toestaan als GitHub dat vraagt.
+- [x] Workflow "Deploy" laten lopen en controleren dat de site op `https://scoutsvosselaar.github.io/scoutsvosselaar/` staat.
 - [ ] Branch protection op `main` (Settings → Rules → Rulesets): force push en verwijderen blokkeren. Rechtstreeks committen moet toegelaten blijven, want de CMS commit op `main`.
 
 ### 5. OAuth App registreren
@@ -97,7 +99,7 @@ GitHub stuurt het oude adres door, maar pas toch alles aan.
 - [ ] Bij de Worker de variabelen zetten (Settings → Variables and Secrets):
   - `GITHUB_CLIENT_ID`: uit stap 5
   - `GITHUB_CLIENT_SECRET`: uit stap 5, als **Secret** (versleuteld)
-  - `ALLOWED_DOMAINS`: het domein van de site, bv. `scoutsvosselaar.be, <organisatie>.github.io`
+  - `ALLOWED_DOMAINS`: de domeinen van de site, bv. `scoutsvosselaar.be, www.scoutsvosselaar.be, scoutsvosselaar.github.io`
 - [ ] De callback-URL van de OAuth App aanpassen naar `https://<worker-url>/callback`.
 - [ ] In `deployment.config.ts` `cmsAuthUrl` op `https://<worker-url>` zetten, committen en pushen.
 - [ ] Testen: `/admin/` openen, "Inloggen met GitHub", een bericht als concept opslaan en weer verwijderen.
@@ -111,7 +113,7 @@ Pas na een volledige test op `github.io`.
 - [ ] Repo → Settings → Pages → Custom domain: `scoutsvosselaar.be`.
 - [ ] Bij de DNS-beheerder **enkel** de webrecords aanpassen:
   - apex `scoutsvosselaar.be`: A-records `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (en eventueel AAAA `2606:50c0:8000::153` tot `2606:50c0:8003::153`)
-  - `www`: CNAME naar `<organisatie>.github.io`
+  - `www`: CNAME naar `scoutsvosselaar.github.io`
   - Controleer de actuele IP-adressen in de GitHub-documentatie ("Managing a custom domain for your GitHub Pages site").
 - [ ] **MX-, SPF- (TXT), DKIM- en andere mailrecords niet aanraken.** Noteer ze vooraf, en controleer achteraf dat ze ongewijzigd zijn en dat mail naar `info@scoutsvosselaar.be` nog aankomt.
 - [ ] Zodra het certificaat klaar is: "Enforce HTTPS" aan.

@@ -1,10 +1,11 @@
 /**
  * Everything that depends on who owns and hosts the site, in one place.
  *
- * The defaults are for the temporary setup on Bent's GitHub account. When the
- * site moves to the scouts' GitHub organization, change the defaults here (or
- * set the matching environment variables in the deploy workflow). See
- * docs/TECHNISCH.md, "Verhuis naar de organisatie".
+ * The defaults are for the scouts' GitHub organization, on the temporary
+ * `scoutsvosselaar.github.io` address. When the own domain is connected,
+ * change `siteUrl` and `basePath` here (or set the matching environment
+ * variables in the deploy workflow). See docs/TECHNISCH.md, "Verhuis naar de
+ * organisatie".
  */
 
 const env = (name: string): string | undefined => {
@@ -14,11 +15,11 @@ const env = (name: string): string | undefined => {
 
 export const deployment = {
   /** GitHub repository (`owner/repo`) that the CMS reads from and commits to. */
-  repo: env('CMS_REPO') ?? 'BentJ-01/scoutsvosselaar',
+  repo: env('CMS_REPO') ?? 'ScoutsVosselaar/scoutsvosselaar',
   /** Branch the CMS commits to and the site is built from. */
   branch: env('CMS_BRANCH') ?? 'main',
   /** Public origin of the site, without trailing slash. */
-  siteUrl: env('SITE_URL') ?? 'https://bentj-01.github.io',
+  siteUrl: env('SITE_URL') ?? 'https://scoutsvosselaar.github.io',
   /**
    * Path the site lives under. `/scoutsvosselaar` on `<user>.github.io`,
    * `/` once the own domain is connected.
