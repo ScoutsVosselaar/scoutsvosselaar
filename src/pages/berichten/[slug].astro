@@ -57,7 +57,7 @@ const ogImage = cover ? (await getImage({ src: cover, width: 1200, format: 'jpg'
         (post.data.buttonUrl || post.data.videoUrl) && (
           <p class="mt-8 flex flex-wrap gap-3">
             {post.data.buttonUrl && (
-              <a class="btn" href={post.data.buttonUrl}>
+              <a class="btn" href={url(post.data.buttonUrl)}>
                 {post.data.buttonLabel ?? 'Meer info'}
               </a>
             )}

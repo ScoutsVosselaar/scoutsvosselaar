@@ -70,7 +70,7 @@ const groupPhoto = year?.data.groupPhotos[0];
           <p class="mt-2 max-w-2xl text-lg">{pinned.data.excerpt}</p>
           <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
             {pinned.data.buttonUrl && pinned.data.buttonLabel && (
-              <a class="btn" href={pinned.data.buttonUrl}>
+              <a class="btn" href={url(pinned.data.buttonUrl)}>
                 {pinned.data.buttonLabel}
               </a>
             )}

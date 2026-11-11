@@ -52,7 +52,7 @@ const multiDay = d.end && d.end.date !== d.start.date && d.end.utc > d.start.utc
         }
         <div class="prose"><Content /></div>
         <p class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
-          {d.linkUrl && !d.cancelled && <a class="btn" href={d.linkUrl}>{d.linkLabel ?? 'Meer info'}</a>}
+          {d.linkUrl && !d.cancelled && <a class="btn" href={url(d.linkUrl)}>{d.linkLabel ?? 'Meer info'}</a>}
           <a class="btn btn-line" href={url(feedPath.event(event.id))} download={`${event.id}.ics`}>Toevoegen aan agenda</a>
         </p>
         <p class="mt-10"><a class="link" href={url('/kalender/')}>Terug naar de kalender</a></p>
