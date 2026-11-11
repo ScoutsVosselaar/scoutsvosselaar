@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { toSiteLink } from '../src/lib/site-links';
+import { toContentLink, toSiteLink } from '../src/lib/site-links';
 
 describe('toSiteLink', () => {
   it('maakt van links naar het eigen domein links binnen de site', () => {
@@ -19,6 +19,22 @@ describe('toSiteLink', () => {
       '#top',
     ]) {
       expect(toSiteLink(href, '/scoutsvosselaar')).toBe(href);
+    }
+  });
+});
+
+describe('toContentLink', () => {
+  it('zet het base path voor een pad op de site', () => {
+    expect(toContentLink('/docs/plan.pdf', '/scoutsvosselaar')).toBe('/scoutsvosselaar/docs/plan.pdf');
+    expect(toContentLink('/docs/plan.pdf', '/scoutsvosselaar/')).toBe('/scoutsvosselaar/docs/plan.pdf');
+    expect(toContentLink('/docs/plan.pdf', '/')).toBe('/docs/plan.pdf');
+    expect(toContentLink('https://www.scoutsvosselaar.be/kalender/', '/scoutsvosselaar')).toBe('/scoutsvosselaar/kalender/');
+  });
+
+  it('zet het base path er niet twee keer voor en laat andere links staan', () => {
+    expect(toContentLink('/scoutsvosselaar/kalender/', '/scoutsvosselaar')).toBe('/scoutsvosselaar/kalender/');
+    for (const href of ['https://www.hopper.be', 'mailto:info@scoutsvosselaar.be', 'tel:+3214600843', '#top', '//cdn.example.com/a.js']) {
+      expect(toContentLink(href, '/scoutsvosselaar')).toBe(href);
     }
   });
 });

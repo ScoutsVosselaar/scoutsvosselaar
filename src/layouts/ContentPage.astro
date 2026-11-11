@@ -2,7 +2,7 @@
 /** Fixed page with a dark intro and readable text. */
 import BaseLayout from './BaseLayout.astro';
 import PageIntro from '@/components/PageIntro.astro';
-import { extra, membership, rental, site } from '@/site.config';
+import { site } from '@/site.config';
 import { contentWarning } from '@/lib/log';
 
 interface Props {
@@ -11,21 +11,7 @@ interface Props {
 }
 const { title, description } = Astro.props;
 
-const missing = Object.entries({
-  'site.address.street': site.address.street,
-  'membership.bankAccount': membership.bankAccount,
-  'membership.paymentReference': membership.paymentReference,
-  'membership.registrationUrl': membership.registrationUrl,
-  'membership.medicalInstructionsUrl': membership.medicalInstructionsUrl,
-  'rental.email': rental.email,
-  'rental.phone': rental.phone,
-  'rental.calendarUrl': rental.calendarUrl,
-  'extra.smoutebollenbakEmail': extra.smoutebollenbakEmail,
-  'extra.privacyPdf': extra.privacyPdf,
-})
-  .filter(([, value]) => !value)
-  .map(([key]) => key);
-if (missing.length) contentWarning(`Vaste gegevens ontbreken in src/site.config.ts (niet getoond): ${missing.join(', ')}`);
+if (!site.address.street) contentWarning('Vaste gegevens ontbreken in src/site.config.ts (niet getoond): site.address.street');
 ---
 
 <BaseLayout title={title} description={description}>

@@ -1,5 +1,6 @@
 /**
- * Fixed group data, managed in code by the webmaster.
+ * Fixed group data, managed in code by the webmaster. The text of the fixed
+ * pages (Inschrijven, Praktisch, ...) is in src/content/pages/ and the CMS.
  *
  * Values that are still `undefined` are not shown on the site; the build lists
  * them as a warning. They come from docs/huidige-site/inhoud.md (§2 and §7).
@@ -20,38 +21,6 @@ export const site = {
     city: 'Vosselaar',
   },
 } as const;
-
-/** Lidgeld and registration (page /inschrijven/). */
-export const membership = {
-  fee: 50,
-  /** With UiTPAS and a right to the reduced rate. */
-  reducedFee: 15,
-  /** For members who join after `lateFrom`. */
-  lateFee: 30,
-  lateFrom: '1 maart',
-  bankAccount: 'BE55 3630 5784 1544' as Maybe,
-  paymentReference: 'lidgeld naam voornaam tak' as Maybe,
-  /** External registration form or document. */
-  registrationUrl: 'https://groepsadmin.scoutsengidsenvlaanderen.be/groepsadmin/frontend/formulier/lidworden/A4108G' as Maybe,
-  /** Instructions for the medical form in the Scouts en Gidsen Vlaanderen administration. */
-  medicalInstructionsUrl: '/docs/handleiding-medische-fiche.pdf' as Maybe,
-};
-
-/** Renting the premises (page /verhuur/). */
-export const rental = {
-  maxPeople: 50,
-  email: 'vzwjeugdwerkingvosselaar@gmail.com' as Maybe,
-  phone: '+32 14 60 08 43' as Maybe,
-  calendarUrl: 'https://jeugdlokalenvosselaar.be/beschikbaarheid' as Maybe,
-  kampasUrl: 'https://www.kampas.be',
-};
-
-/** Other addresses and documents. */
-export const extra = {
-  smoutebollenbakEmail: 'smoutebollenbak@scoutsvosselaar.be' as Maybe,
-  /** Privacy statement as a file in public/docs/. */
-  privacyPdf: '/docs/privacyverklaring.pdf' as Maybe,
-};
 
 export interface NavItem {
   label: string;

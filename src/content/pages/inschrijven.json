@@ -1,0 +1,30 @@
+{
+  "title": "Inschrijven",
+  "description": "Lid worden van Scouts Don Bosco Vosselaar: lidgeld, inschrijven via de groepsadministratie, UiTPAS en de medische fiche.",
+  "intro": "Inschrijven doe je elk werkjaar opnieuw, in twee stappen.",
+  "blocks": [
+    {
+      "type": "text",
+      "title": "In twee stappen",
+      "body": "1. Schrijf het lidgeld over naar **BE55 3630 5784 1544**, met als mededeling **'lidgeld naam voornaam tak'**.\n2. Vul het inschrijfformulier in en klik op verzenden.",
+      "buttonLabel": "Naar het inschrijfformulier",
+      "buttonUrl": "https://groepsadmin.scoutsengidsenvlaanderen.be/groepsadmin/frontend/formulier/lidworden/A4108G",
+      "bodyAfter": "Loopt er iets mis of heb je een vraag? Mail de groepsleiding op [info@scoutsvosselaar.be](mailto:info@scoutsvosselaar.be)."
+    },
+    {
+      "type": "text",
+      "title": "Lidgeld",
+      "body": "- Het lidgeld is **50 euro**.\n- Jongeren met een UiTPAS en recht op verminderd tarief betalen **15 euro**.\n- Wie zich inschrijft na 1 maart, betaalt **30 euro**."
+    },
+    {
+      "type": "text",
+      "title": "UiTPAS Kempen",
+      "body": "Sinds 2026 doet Scouts Don Bosco Vosselaar mee met de UiTPAS Kempen. Bij elke inschrijving voor een activiteit die geld kost (bv. kampen, weekends of kerstfeestjes) kan je aanduiden dat je een UiTPAS hebt. Zo spaar je punten, en wie recht heeft op een kansentarief krijgt alle voordelen die daarbij horen."
+    },
+    {
+      "type": "text",
+      "title": "Medische fiche",
+      "body": "De medische fiche staat volledig online, in de groepsadministratie van Scouts en Gidsen Vlaanderen. Na je inschrijving krijg je een lidnummer. Daarmee maak je een account aan in de groepsadministratie, waar je de gegevens van je kind invult en aanpast als dat nodig is. Je houdt ze dus zelf up-to-date.\n\n[Stappenplan: account aanmaken en medische fiche invullen (PDF)](/docs/handleiding-medische-fiche.pdf)\n\nBen je de mail met je lidnummer kwijt? Mail de naam van je kind naar [info@scoutsvosselaar.be](mailto:info@scoutsvosselaar.be)."
+    }
+  ]
+}

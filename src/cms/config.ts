@@ -343,6 +343,118 @@ const voskes: EntryCollection = {
   ],
 };
 
+/** Text in a block of a page. The block title is the H2, so headings start at H3. */
+const blockText = (name: string, label: string, hint?: string): Field => ({
+  name,
+  label,
+  widget: 'richtext',
+  buttons: ['bold', 'italic', 'link', 'heading-three', 'heading-four', 'bulleted-list', 'numbered-list', 'quote'],
+  editor_components: [],
+  modes: ['rich_text'],
+  required: false,
+  hint,
+});
+
+const blockTitle = (fallback: string): Field =>
+  string('title', 'Titel', { default: fallback, hint: 'Staat links naast het blok.' });
+
+const pages: EntryCollection = {
+  name: 'pages',
+  label: "Pagina's",
+  label_singular: 'Pagina',
+  icon: 'article',
+  description: `De tekst van de vaste pagina's, zoals Inschrijven, Praktisch en Verhuur. Een pagina bestaat uit blokken die je kunt toevoegen, verwijderen en verplaatsen. ${SAVE_NOTE}`,
+  folder: 'src/content/pages',
+  extension: 'json',
+  format: 'json',
+  identifier_field: 'title',
+  create: false,
+  delete: false,
+  duplicate: false,
+  media_folder: '/public/docs',
+  public_folder: '/docs',
+  summary: '{{title}}',
+  sortable_fields: { fields: ['title'], default: { field: 'title' } },
+  fields: [
+    string('title', 'Titel', { hint: 'De grote titel bovenaan. De naam in het menu verandert niet mee.' }),
+    optionalString('intro', 'Intro', { hint: 'Optioneel. Een korte zin onder de titel.' }),
+    {
+      name: 'description',
+      label: 'Beschrijving voor zoekmachines',
+      widget: 'text',
+      required: false,
+      maxlength: 160,
+      hint: 'Een zin over de pagina. Google en sociale media tonen die.',
+    },
+    {
+      name: 'blocks',
+      label: 'Blokken',
+      label_singular: 'blok',
+      widget: 'list',
+      required: false,
+      hint: 'Kies bij "Toevoegen" een tekstblok of een blok dat zichzelf vult.',
+      types: [
+        {
+          name: 'text',
+          label: 'Tekstblok',
+          description: 'Een titel en tekst, eventueel met een knop.',
+          summary: '{{fields.title}}',
+          fields: [
+            blockTitle(''),
+            blockText('body', 'Tekst'),
+            optionalString('buttonLabel', 'Tekst op de knop', { hint: 'Optioneel. Bv. "Naar het inschrijfformulier".' }),
+            optionalString('buttonUrl', 'Link van de knop', {
+              hint: 'Een webadres (https://...) of een pad op de site (bv. /kalender/).',
+              pattern: ['^(https?://|mailto:|tel:|/)', 'Begin met https://, mailto:, tel: of /'],
+            }),
+            {
+              name: 'buttonFile',
+              label: 'Of een bestand voor de knop',
+              widget: 'file',
+              required: false,
+              choose_url: false,
+              hint: 'Bv. een PDF om te downloaden. Gaat voor op de link.',
+            },
+            blockText('bodyAfter', 'Tekst onder de knop', 'Optioneel.'),
+          ],
+        },
+        {
+          name: 'emails',
+          label: 'Mailadressen',
+          description: 'Het algemene adres en de takmails (uit Takken), plus extra adressen.',
+          summary: '{{fields.title}}',
+          fields: [
+            blockTitle('Mailadressen'),
+            {
+              name: 'extra',
+              label: 'Extra adressen',
+              label_singular: 'adres',
+              widget: 'list',
+              required: false,
+              summary: '{{fields.label}}: {{fields.email}}',
+              fields: [string('label', 'Waarvoor'), string('email', 'E-mail', { type: 'email' })],
+            },
+          ],
+        },
+        {
+          name: 'meetings',
+          label: 'Vergadermomenten',
+          description: 'Het vergadermoment van elke tak (uit Takken).',
+          summary: '{{fields.title}}',
+          fields: [blockTitle('Vergadermomenten')],
+        },
+        {
+          name: 'groupLeaders',
+          label: 'Groepsleiding',
+          description: 'De groepsleiding van het actieve werkjaar (uit Werkjaren).',
+          summary: '{{fields.title}}',
+          fields: [blockTitle('Groepsleiding')],
+        },
+      ],
+    },
+  ],
+};
+
 const sections: EntryCollection = {
   name: 'sections',
   label: 'Takken',
@@ -414,9 +526,10 @@ const editorRows: Record<string, string[][]> = {
   albums: [['title', 'date']],
   voskes: [['title', 'date']],
   sections: [['name', 'ageRange'], ['meetingTime', 'email'], ['leaderLabel', 'color', 'order']],
+  pages: [['title', 'intro']],
 };
 
-const entryCollections = [posts, events, scoutYears, leaders, albums, voskes, sections];
+const entryCollections = [posts, events, scoutYears, leaders, albums, voskes, pages, sections];
 
 /** CSS that lays out the editor in a compact grid of six columns. */
 export function buildEditorCss(): string {

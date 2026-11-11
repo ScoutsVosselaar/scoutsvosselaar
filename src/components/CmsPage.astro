@@ -1,0 +1,23 @@
+---
+/** A fixed page whose text comes from the CMS (src/content/pages/<id>.json). */
+import ContentPage from '@/layouts/ContentPage.astro';
+import PageBlocks from './PageBlocks.astro';
+import { getPage } from '@/lib/content';
+import { site } from '@/site.config';
+
+interface Props {
+  id: string;
+  /** Title when the page file is missing or has no title. */
+  fallbackTitle: string;
+}
+const { id, fallbackTitle } = Astro.props;
+
+const page = await getPage(id);
+const title = page?.data.title || fallbackTitle;
+const description = page?.data.description ?? `${title}, ${site.name}.`;
+---
+
+<ContentPage title={title} description={description}>
+  {page?.data.intro && <Fragment slot="intro">{page.data.intro}</Fragment>}
+  {page && <PageBlocks blocks={page.data.blocks} />}
+</ContentPage>

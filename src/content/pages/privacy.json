@@ -1,0 +1,13 @@
+{
+  "title": "Privacy",
+  "description": "Privacyverklaring van Scouts Don Bosco Vosselaar.",
+  "blocks": [
+    {
+      "type": "text",
+      "title": "Privacyverklaring",
+      "body": "Deze site gebruikt geen cookies en volgt je niet.",
+      "buttonLabel": "Download de privacyverklaring (PDF)",
+      "buttonFile": "/docs/privacyverklaring.pdf"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { CONTENT_DIR } from './lib/content-dir';
+import { contentWarning } from './lib/log';
 import {
   bool,
   imageHelpers,
@@ -167,7 +168,49 @@ const albums = defineCollection({
   },
 });
 
+const blockTitle = (type: string) => soft(`blocks.${type}.title`, z.string().trim(), '');
+
+/** Blocks of a page. Each `type` matches a block type in src/cms/config.ts. */
+const pageBlock = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('text'),
+    title: blockTitle('text'),
+    body: text('blocks.text.body'),
+    buttonLabel: optionalText('blocks.text.buttonLabel'),
+    buttonUrl: optionalText('blocks.text.buttonUrl'),
+    buttonFile: optionalText('blocks.text.buttonFile'),
+    bodyAfter: text('blocks.text.bodyAfter'),
+  }),
+  z.object({
+    type: z.literal('emails'),
+    title: blockTitle('emails'),
+    extra: list('blocks.emails.extra', z.object({ label: text('blocks.emails.extra.label'), email: text('blocks.emails.extra.email') })),
+  }),
+  z.object({ type: z.literal('meetings'), title: blockTitle('meetings') }),
+  z.object({ type: z.literal('groupLeaders'), title: blockTitle('groupLeaders') }),
+]);
+
+/** Fixed pages (Inschrijven, Praktisch, ...): their text and blocks. Created in code only. */
+const pages = defineCollection({
+  loader: json('pages'),
+  schema: z.object({
+    title: text('title'),
+    description: optionalText('description'),
+    intro: optionalText('intro'),
+    // An invalid block is left out; the other blocks are still shown.
+    blocks: soft('blocks', z.array(z.unknown()), []).transform((items) =>
+      items.flatMap((item, i) => {
+        const block = pageBlock.safeParse(item);
+        if (block.success) return [block.data];
+        contentWarning(`Ongeldig blok ${i + 1} op een pagina: ${JSON.stringify(item).slice(0, 60)}. Overgeslagen.`);
+        return [];
+      }),
+    ),
+  }),
+});
+
 export const collections = {
+  pages,
   settings,
   sections,
   leaders,

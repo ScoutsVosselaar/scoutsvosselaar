@@ -1,0 +1,13 @@
+{
+  "title": "Onze groep",
+  "description": "Scouts Don Bosco Vosselaar, groep A4108G van Scouts en Gidsen Vlaanderen.",
+  "blocks": [
+    {
+      "type": "text",
+      "title": "Scouts Don Bosco Vosselaar",
+      "body": "We zijn groep **A4108G** van Scouts en Gidsen Vlaanderen, in Gouw Kempen, District Noorderkempen. Op zondagnamiddag spelen onze takken in en rond de lokalen, in het bos van de Konijnenberg en op het Geiteblak.\n\nKonijnenbergpad 2Y, 2350 Vosselaar · [Open in kaart](https://www.openstreetmap.org/search?query=Konijnenbergpad%202Y%2C%202350%20Vosselaar)"
+    },
+    { "type": "meetings", "title": "Vergadermomenten" },
+    { "type": "groupLeaders", "title": "Groepsleiding" }
+  ]
+}

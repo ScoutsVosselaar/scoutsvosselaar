@@ -148,3 +148,35 @@ test('bericht, evenement en nieuw werkjaar', async ({ page }) => {
 
   expect(errors).toEqual([]);
 });
+
+test("pagina: tekst aanpassen en een blok toevoegen", async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await openLocalRepository(page);
+  const admin = page.url().split('#')[0] ?? '';
+
+  await open(page, admin, 'collections/pages/entries/praktisch', 'Titel');
+  await page.getByRole('textbox', { name: 'Intro' }).fill('Alles wat je moet weten.');
+
+  // A new text block with bold text, at the end.
+  await page.getByRole('button', { name: 'blok toevoegen' }).last().click();
+  await page.getByRole('menuitem').filter({ hasText: 'Tekstblok' }).click();
+  const block = page.locator('section[data-key-path="blocks"] [data-key-path$=".title"] input').last();
+  await block.fill('Fietsen');
+  const editor = page.locator('section[data-key-path="blocks"] [contenteditable=true]').last();
+  await editor.click();
+  await page.keyboard.type('Kom met de ');
+  await page.keyboard.press('ControlOrMeta+b');
+  await page.keyboard.type('fiets');
+  await save(page);
+
+  const saved = JSON.parse((await readRepoFile(page, 'src/content/pages/praktisch.json')).toString());
+  expect(saved.intro).toBe('Alles wat je moet weten.');
+  expect(saved.blocks.map((b: { type: string }) => b.type)).toEqual(['text', 'text', 'text', 'emails', 'text']);
+  expect(saved.blocks.at(-1)).toMatchObject({ type: 'text', title: 'Fietsen', body: 'Kom met de **fiets**' });
+  // Existing blocks stay as they were.
+  expect(saved.blocks[3].extra).toHaveLength(2);
+  expect(saved.blocks[0].body).toContain('- De scoutsdas is verplicht voor iedereen.');
+
+  expect(errors).toEqual([]);
+});

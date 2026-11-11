@@ -1,0 +1,29 @@
+{
+  "title": "Praktisch",
+  "description": "Praktische info over Scouts Don Bosco Vosselaar: uniform, ongevallen, lokalen en mailadressen.",
+  "blocks": [
+    {
+      "type": "text",
+      "title": "Uniform",
+      "body": "Spelen vinden we belangrijker dan een perfect uniform, dus we zijn er vrij soepel in. We verwachten enkel dat het bovenste deel in orde is:\n\n- Alle leden: ons eigen bordeaux scouts-T-shirt, aangevuld met de uniformtrui.\n- Vanaf de jongverkenners: het beige scoutshemd en de bruine trui.\n- De scoutsdas is verplicht voor iedereen.\n\nHemd en trui koop je in een Hopper-winkel (adressen op [hopper.be](https://www.hopper.be), ook met webshop) of bij de Trapper in Herentals. Voor het bordeaux T-shirt en de das kan je elke zondag terecht bij iemand van de leiding.\n\nKleed je scout ook op het weer. We gaan niet binnen zitten als het sneeuwt: de natuur is ons speelterrein, ook bij regen of sneeuw."
+    },
+    {
+      "type": "text",
+      "title": "Ongeval",
+      "body": "Gebeurt er een ongeval, dan gaat iemand van de leiding met je zoon of dochter naar de dokter of het ziekenhuis. We nemen zo snel mogelijk contact met je op.\n\nDe dokter vult een medisch attest in en ondertekent het. Dat gaat naar Ethias, waar een verzekeringsdossier wordt geopend. De rekeningen die je daarna krijgt, betaal je gewoon. Bij je ziekenfonds krijg je een deel terug. Het bewijs van het remgeld, de rekening van de apotheker en dergelijke breng je binnen bij de groepsleiding. Die stuurt alles door naar Ethias, zodat alle kosten worden terugbetaald.\n\nMerk je thuis dat er iets niet in orde is en ligt de oorzaak bij de scouts? Neem dan contact op met de leiding van de tak. Voor verdere vragen over de verzekering kan je bij de groepsleiding terecht."
+    },
+    {
+      "type": "text",
+      "title": "Lokalen",
+      "body": "Onze lokalen liggen aan het **Konijnenbergpad 2Y**, 2350 Vosselaar. We hebben geen brievenbus: wil je ons iets bezorgen, contacteer dan de groepsleiding.\n\nDe lokalen liggen op een 100 meter van het centrum en op dezelfde afstand van de Antwerpsesteenweg. Op een minuutje wandelen ligt de Konijnenberg, ideaal voor een bosspel. Steek je die over, dan sta je aan het Geiteblak, met ruimte genoeg voor pleinspelen.\n\nSinds 2006 hebben de meeste takken nieuwe houten lokalen, verdeeld over twee verdiepingen. Er is een keuken met al het kookmateriaal, drie toiletten en een ruime douche. Het materiaal stockeren we in twee aangrenzende materiaalkoten."
+    },
+    {
+      "type": "emails",
+      "title": "Mailadressen",
+      "extra": [
+        { "label": "Verhuur van de lokalen", "email": "vzwjeugdwerkingvosselaar@gmail.com" },
+        { "label": "Meewerken aan de smoutebollenbak", "email": "smoutebollenbak@scoutsvosselaar.be" }
+      ]
+    }
+  ]
+}

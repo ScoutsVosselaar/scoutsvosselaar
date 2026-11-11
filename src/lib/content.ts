@@ -9,6 +9,7 @@ import { contentWarning } from './log';
 export type Section = CollectionEntry<'sections'>;
 export type Leader = CollectionEntry<'leaders'>;
 export type ScoutYear = CollectionEntry<'scout-years'>;
+export type Page = CollectionEntry<'pages'>;
 
 const byId = <T extends { id: string }>(items: readonly T[]) => new Map(items.map((i) => [i.id, i]));
 
@@ -110,4 +111,11 @@ export async function getAlbums() {
       return false;
     })
     .sort((a, b) => (b.data.date?.utc.getTime() ?? 0) - (a.data.date?.utc.getTime() ?? 0));
+}
+
+/** A fixed page from the CMS. Missing (e.g. a deleted file): `undefined`, with a warning. */
+export async function getPage(id: string): Promise<Page | undefined> {
+  const page = (await getCollection('pages')).find((p) => p.id === id);
+  if (!page) contentWarning(`Pagina "${id}" ontbreekt in src/content/pages/. Enkel de titel wordt getoond.`);
+  return page;
 }

@@ -1,0 +1,118 @@
+---
+/**
+ * The blocks of a fixed page from the CMS (collection `pages`). Text blocks
+ * hold Markdown; the other block types fill themselves from the takken and
+ * the active werkjaar.
+ */
+import InfoBlock from './InfoBlock.astro';
+import LeaderCard from './LeaderCard.astro';
+import { getCurrentYear, getSections, getYearOverview, type Page } from '@/lib/content';
+import { renderMarkdown } from '@/lib/markdown';
+import { url } from '@/lib/paths';
+import { site } from '@/site.config';
+
+interface Props {
+  blocks: Page['data']['blocks'];
+}
+const { blocks } = Astro.props;
+
+const [sections, year] = await Promise.all([getSections(), getCurrentYear()]);
+const overview = year && blocks.some((b) => b.type === 'groupLeaders') ? await getYearOverview(year) : undefined;
+
+// Unique ids for the headings, also when two blocks have the same title.
+const used = new Set<string>(['groepsleiding']);
+const idFor = (title: string) => {
+  const slug = title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'blok';
+  let id = slug;
+  for (let n = 2; used.has(id); n++) id = `${slug}-${n}`;
+  used.add(id);
+  return id;
+};
+
+const rendered = await Promise.all(
+  blocks.map(async (block) => {
+    if (block.type !== 'text') return { block, id: idFor(block.title) };
+    const href = block.buttonFile ?? block.buttonUrl;
+    return {
+      block,
+      id: idFor(block.title),
+      body: block.body ? await renderMarkdown(block.body) : '',
+      bodyAfter: block.bodyAfter ? await renderMarkdown(block.bodyAfter) : '',
+      button: href && block.buttonLabel ? { href: url(href), label: block.buttonLabel, download: Boolean(block.buttonFile) } : undefined,
+    };
+  }),
+);
+---
+
+{
+  rendered.map(({ block, id, body, bodyAfter, button }) => {
+    if (block.type === 'text') {
+      return (
+        <InfoBlock title={block.title} id={id}>
+          <Fragment set:html={body} />
+          {button && (
+            <p>
+              <a class="btn" href={button.href} download={button.download || undefined}>
+                {button.label}
+              </a>
+            </p>
+          )}
+          <Fragment set:html={bodyAfter} />
+        </InfoBlock>
+      );
+    }
+    if (block.type === 'emails') {
+      return (
+        <InfoBlock title={block.title} id={id}>
+          <ul>
+            <li>
+              Algemene vragen, voor de groepsleiding: <a href={`mailto:${site.email}`}>{site.email}</a>
+            </li>
+            {sections
+              .filter((s) => s.data.email)
+              .map((s) => (
+                <li>
+                  {s.data.name}: <a href={`mailto:${s.data.email}`}>{s.data.email}</a>
+                </li>
+              ))}
+            {block.extra
+              .filter((e) => e.label && e.email)
+              .map((e) => (
+                <li>
+                  {e.label}: <a href={`mailto:${e.email}`}>{e.email}</a>
+                </li>
+              ))}
+          </ul>
+        </InfoBlock>
+      );
+    }
+    if (block.type === 'meetings') {
+      return (
+        <InfoBlock title={block.title} id={id}>
+          <ul>
+            {sections.map((s) => (
+              <li>
+                <strong>{s.data.name}</strong>: {s.data.meetingTime}
+              </li>
+            ))}
+          </ul>
+        </InfoBlock>
+      );
+    }
+    return (
+      overview &&
+      overview.groupLeaders.length > 0 && (
+        <section aria-labelledby="groepsleiding" class="border-t-2 border-ink pt-5">
+          <h2 id="groepsleiding" class="text-2xl font-bold sm:text-3xl">
+            {block.title || 'Groepsleiding'} {overview.year.data.label}
+          </h2>
+          <ul class="mt-6 grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-4">
+            {overview.groupLeaders.map((leader) => (
+              <LeaderCard leader={leader} showContact />
+            ))}
+          </ul>
+        </section>
+      )
+    );
+  })
+}

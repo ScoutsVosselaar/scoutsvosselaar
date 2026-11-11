@@ -1,0 +1,17 @@
+{
+  "title": "Verhuur",
+  "description": "De lokalen van Scouts Don Bosco Vosselaar huren voor een weekend of kamp, tot 50 personen.",
+  "intro": "Onze lokalen zijn te huur voor weekends en kampen, voor groepen tot 50 personen.",
+  "blocks": [
+    {
+      "type": "text",
+      "title": "Reserveren",
+      "body": "De verhuur gebeurt door de vzw van de lokalen, niet door de leiding.\n\n- Mail: [vzwjeugdwerkingvosselaar@gmail.com](mailto:vzwjeugdwerkingvosselaar@gmail.com)\n- Telefoon: [+32 14 60 08 43](tel:+3214600843)\n- [Bekijk de verhuurkalender](https://jeugdlokalenvosselaar.be/beschikbaarheid)\n- Je vindt onze lokalen ook op [kampas.be](https://www.kampas.be)."
+    },
+    {
+      "type": "text",
+      "title": "De lokalen",
+      "body": "Houten lokalen op twee verdiepingen, met een keuken met kookmateriaal, drie toiletten en een ruime douche. Op een minuutje wandelen liggen de Konijnenberg voor bosspelen en het Geiteblak voor pleinspelen."
+    }
+  ]
+}
