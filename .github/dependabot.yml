@@ -1,0 +1,31 @@
+# Weekly update proposals, grouped per ecosystem. Every proposal is a pull
+# request that the CI workflow checks before anyone merges it.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Brussels
+    open-pull-requests-limit: 5
+    ignore:
+      # Pinned on purpose. Update by hand, see docs/TECHNISCH.md, "Sveltia CMS updaten".
+      - dependency-name: '@sveltia/cms'
+    groups:
+      npm-klein:
+        update-types: [minor, patch]
+      npm-groot:
+        update-types: [major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/Brussels
+    groups:
+      actions:
+        patterns: ['*']

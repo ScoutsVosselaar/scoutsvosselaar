@@ -1,0 +1,40 @@
+name: CI
+
+# Checks every pull request (also those from Dependabot) before it is merged.
+# Commits on main, also from the CMS, are checked by the Deploy workflow.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Afhankelijkheden installeren
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecontrole
+        run: pnpm check
+
+      - name: Unit tests
+        run: pnpm test
+
+      # Without pdftoppm the build skips the page images of 't Voske, which is
+      # fine for a check.
+      - name: Site bouwen
+        run: pnpm build

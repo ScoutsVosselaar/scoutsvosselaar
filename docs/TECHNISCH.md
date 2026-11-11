@@ -83,7 +83,7 @@ GitHub stuurt het oude adres door, maar pas toch alles aan.
 - [x] Repo → Settings → Pages → Source: **GitHub Actions**.
 - [x] Repo → Actions: workflows toestaan als GitHub dat vraagt.
 - [x] Workflow "Deploy" laten lopen en controleren dat de site op `https://scoutsvosselaar.github.io/scoutsvosselaar/` staat.
-- [ ] Branch protection op `main` (Settings → Rules → Rulesets): force push en verwijderen blokkeren. Rechtstreeks committen moet toegelaten blijven, want de CMS commit op `main`.
+- [ ] Branch protection op `main`: force push en verwijderen blokkeren. Rechtstreeks committen moet toegelaten blijven, want de CMS commit op `main`. Zie "Branch protection" onder "CI en onderhoud".
 
 ### 5. OAuth App registreren
 
@@ -134,7 +134,25 @@ Sveltia is nog pre-1.0 en verschijnt vaak. De versie staat exact gepind in `pack
 3. `pnpm check && pnpm test && pnpm test:e2e`
 4. Test kort zelf in de lokale modus en daarna online.
 
-Dependabot stelt maandelijks updates voor, maar merge een Sveltia-update nooit zonder de stappen hierboven.
+Dependabot slaat `@sveltia/cms` bewust over (`.github/dependabot.yml`). Update Sveltia enkel met de stappen hierboven.
+
+## CI en onderhoud
+
+- **Deploy** (`.github/workflows/deploy.yml`): bij elke commit op `main`, ook van de CMS, en elke nacht. Typecontrole, unit tests, build en publicatie. Mislukt ze, dan opent ze een issue met label `deploy` en blijft de vorige versie online.
+- **CI** (`.github/workflows/ci.yml`): bij elke pull request. Installeren, `astro check`, unit tests en build. Ze publiceert niets.
+- **Dependabot** (`.github/dependabot.yml`): elke maandag voorstellen voor npm-pakketten en GitHub Actions, gegroepeerd: kleine npm-updates (minor en patch) samen, grote (major) samen, en alle actions samen. Merge een voorstel pas als CI groen is. Bij een grote update: lees de release notes en test lokaal met `pnpm dev`.
+- Gebruik in alle workflows dezelfde versies van de actions. Dependabot werkt ze samen bij.
+
+### Branch protection
+
+Een ruleset op `main` die force push en verwijderen blokkeert, maar gewone commits toelaat:
+
+1. Repo → **Settings** → **Rules** → **Rulesets** → **New ruleset** → **New branch ruleset**.
+2. **Ruleset Name:** `main beschermen`. **Enforcement status:** **Active**.
+3. **Bypass list:** leeg laten.
+4. **Target branches** → **Add target** → **Include default branch**.
+5. Bij **Rules** enkel **Restrict deletions** en **Block force pushes** aangevinkt laten. Vink **niet** aan: "Require a pull request before merging", "Require status checks to pass", "Require signed commits" of "Restrict updates". Die kunnen de commits van de CMS tegenhouden.
+6. **Create**.
 
 ## Kalender en agenda-feeds
 
