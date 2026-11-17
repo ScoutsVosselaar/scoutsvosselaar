@@ -39,6 +39,18 @@
     font-family: var(--font-sans);
     font-size: 1.125rem;
     line-height: 1.6;
+    /* A long address or link breaks instead of widening the page. */
+    overflow-wrap: break-word;
+  }
+
+  /* Tilted photos may stick out a few pixels; never let that scroll the page sideways. */
+  main {
+    overflow-x: clip;
+  }
+
+  /* Grid columns may get narrower than their longest word, so one long address cannot widen the layout. */
+  :where(.grid) > * {
+    min-width: 0;
   }
 
   h1,
@@ -238,6 +250,8 @@
     color: var(--color-brand);
     font-weight: 700;
     text-decoration: underline;
+    /* A pasted form address has no spaces to break at. */
+    overflow-wrap: anywhere;
   }
   .prose ul {
     list-style: square;

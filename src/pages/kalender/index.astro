@@ -22,7 +22,7 @@ const feeds = [
 <BaseLayout title="Kalender" description={`De kalender van ${site.name}: weekends, kampen, feesten en andere activiteiten, per tak.`}>
   <PageIntro title="Kalender">De activiteiten van de groep en de takken. De gewone zondagen staan bij elke tak.</PageIntro>
 
-  <div class="wrap grid gap-x-14 gap-y-12 py-10 lg:grid-cols-[1fr_20rem]">
+  <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-x-14 gap-y-12 py-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
     <div>
       <div data-calendar-controls hidden class="mb-6 space-y-4">
         <div role="group" aria-label="Toon activiteiten voor" class="flex flex-wrap gap-2">
