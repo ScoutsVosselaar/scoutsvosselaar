@@ -6,6 +6,7 @@ allDay: false
 forLeaders: false
 cancelled: false
 location: Scoutslokalen Vosselaar
+image: ../../assets/uploads/events/verkennerbar_kidscinema.webp
 ---
 
 21 november organiseren de verkenners van Scouts Don Bosco Vosselaar de Verkennerbar en gratis kids cinema.
