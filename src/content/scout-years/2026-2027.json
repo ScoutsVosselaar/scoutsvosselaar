@@ -1,6 +1,6 @@
 {
   "label": "2026-2027",
-  "theme": "Scouting? DAS Goesting!",
+  "theme": "Vurig Verbonden",
   "startDate": "2026-09-01",
   "endDate": "2027-08-31",
   "groupLeaders": [
@@ -127,5 +127,14 @@
         "alexine-cabanier"
       ]
     }
+  ],
+  "groupPhotos": [
+    "../../assets/uploads/scout-years/groepsfoto-wolven-1.webp",
+    "../../assets/uploads/scout-years/groepsfoto-welpen-1.webp",
+    "../../assets/uploads/scout-years/groepsfoto-verkenners-1.webp",
+    "../../assets/uploads/scout-years/groepsfoto-kapoenen.webp",
+    "../../assets/uploads/scout-years/groepsfoto-jongverkenners.webp",
+    "../../assets/uploads/scout-years/groepsfoto-jins.webp",
+    "../../assets/uploads/scout-years/groepsfoto-akabe.webp"
   ]
 }
